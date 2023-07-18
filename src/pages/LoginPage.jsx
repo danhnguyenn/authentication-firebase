@@ -11,53 +11,48 @@ const { Title, Paragraph } = Typography;
 const { Item } = Form;
 
 const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleLogin = async () => {
+  const handleLogin = async (values) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      await signInWithEmailAndPassword(auth, values.email, values.password);
     } catch (err) {
       throw new Error(err);
     }
   };
-
-  const { currentUser } = useContext(AuthContext);
-
-  if (currentUser) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <div className="login">
       <Space className="container">
         <img src={Logo} alt="" />
         <Title>Đăng nhập</Title>
-        <Input
-          placeholder="Email"
-          size="large"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Mật khẩu"
-          size="large"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Link to="" className="nav-link">
-          Quên mật khẩu
-        </Link>
-        <Button
-          onClick={handleLogin}
-          block
-          style={{
-            background: "#f80",
-            color: "#fff",
-          }}
-          size="large"
-        >
-          Đăng nhập
-        </Button>
+        <Form onFinish={handleLogin} name="login">
+          <Item
+            name="email"
+            rules={[{ required: true, message: "Please input your email!" }]}
+          >
+            <Input placeholder="Email" size="large" />
+          </Item>
+          <Item
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input type="password" placeholder="Mật khẩu" size="large" />
+          </Item>
+          <Link to="" className="nav-link">
+            Quên mật khẩu
+          </Link>
+          <Button
+            htmlType="submit"
+            block
+            style={{
+              background: "#f80",
+              color: "#fff",
+            }}
+            size="large"
+          >
+            Đăng nhập
+          </Button>
+        </Form>
+
         <Space
           style={{
             width: "100%",

@@ -1,56 +1,54 @@
 import { GoogleOutlined, FacebookFilled, AppleFilled } from "@ant-design/icons";
-import { Button, Divider, Input, Space, Typography } from "antd";
-import React, { useState } from "react";
+import { Button, Divider, Input, Space, Typography, Form } from "antd";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { handleSignInWithGoogle } from "../utils/func";
 const { Title, Paragraph } = Typography;
+const { Item } = Form;
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const handleSignUp = async () => {
+  const handleSignUp = async (values) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
     } catch (err) {
       throw new Error(err);
     }
   };
-
-  console.log(auth.currentUser);
 
   return (
     <div className="login">
       <Space className="container">
         <img src={Logo} alt="" />
         <Title>Đăng ký</Title>
-        <Input
-          placeholder="Email"
-          size="large"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <Input
-          type="password"
-          placeholder="Mật khẩu"
-          size="large"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <Button
-          block
-          style={{
-            background: "#f80",
-            color: "#fff",
-          }}
-          size="large"
-          onClick={handleSignUp}
-        >
-          Đăng ký
-        </Button>
+        <Form onFinish={handleSignUp} name="signup">
+          <Item
+            name="email"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input placeholder="Email" size="large" />
+          </Item>
+          <Item
+            name="password"
+            rules={[{ required: true, message: "Please input your password!" }]}
+          >
+            <Input type="password" placeholder="Mật khẩu" size="large" />
+          </Item>
+          <Button
+            htmlType="submit"
+            block
+            style={{
+              background: "#f80",
+              color: "#fff",
+            }}
+            size="large"
+          >
+            Đăng ký
+          </Button>
+        </Form>
+
         <Space
           style={{
             width: "100%",
