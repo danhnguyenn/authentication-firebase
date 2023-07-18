@@ -1,11 +1,10 @@
 import { GoogleOutlined, FacebookFilled, AppleFilled } from "@ant-design/icons";
 import { Button, Divider, Input, Space, Typography, Form } from "antd";
-import React, { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 import Logo from "../assets/img/logo.png";
 import { auth } from "../config/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { AuthContext } from "../context/Auth";
 import { handleSignInWithGoogle } from "../utils/func";
 const { Title, Paragraph } = Typography;
 const { Item } = Form;
