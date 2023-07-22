@@ -1,10 +1,37 @@
-import { useRoutes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./index.css";
-import routes from "./routes";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
+import StudentHomePage from "./pages/student/StudentHomePage";
+import ClassPage from "./pages/teacher/ClassPage";
+import TeacherHomePage from "./pages/teacher/TeacherHomePage";
+import useAuth from "./hooks/useAuth";
 
 function App() {
-  const routing = useRoutes(routes);
-  return <>{routing}</>;
+  const { userRole, currentUser } = useAuth();
+
+  return (
+    <>
+      <Routes>
+        {userRole === "teacher" && (
+          <>
+            <Route path="/" element={<TeacherHomePage />} />
+          </>
+        )}
+
+        {userRole === "student" && (
+          <>
+            <Route path="/" element={<StudentHomePage />} />
+          </>
+        )}
+
+        {currentUser && <Route path="classroom" element={<ClassPage />} />}
+
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;
