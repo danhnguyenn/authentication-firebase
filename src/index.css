@@ -31,6 +31,18 @@
   width: 100%;
 }
 
-.container .nav-link{
+/* .container .nav-link{
   
+} */
+
+.custom-card {
+  margin: 16px 0;
+}
+
+.custom-card .ant-card-head{
+  border-bottom: none !important;
+}
+
+.custom-card .ant-card-body {
+  display: none !important;
 }

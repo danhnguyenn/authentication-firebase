@@ -10,6 +10,9 @@ const useAuth = () => {
   const { currentUser, setCurrentUser } = useContext(AuthContext);
   const location = useLocation();
   const from = location.state?.from?.pathname;
+
+  console.log({ from });
+
   const navigate = useNavigate();
 
   const handleAuthStateChange = useCallback(
@@ -31,7 +34,7 @@ const useAuth = () => {
             const storedUser = localStorage.getItem("currentUser");
             setCurrentUser(JSON.parse(storedUser));
             setUserRole(newData.role);
-            if (from !== location.pathname) {
+            if (from && from !== location.pathname) {
               navigate(from, { replace: true });
             }
           } else {
