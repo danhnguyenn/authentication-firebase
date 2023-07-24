@@ -8,10 +8,20 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (currentUser == null) {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!currentUser) {
       navigate("/login");
     }
-  }, [navigate, currentUser]);
+  }, [currentUser, navigate]);
+
+  console.log({ currentUser });
+
   return (
     <AuthContext.Provider
       value={{

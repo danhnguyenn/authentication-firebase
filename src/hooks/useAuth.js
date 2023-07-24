@@ -1,19 +1,12 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/Auth";
+import { AuthContext } from "../context/AuthContext";
 import { auth, db } from "../config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
-import { useLocation, useNavigate } from "react-router-dom";
 import { getRoleString } from "../utils/func";
 
 const useAuth = () => {
   const [userRole, setUserRole] = useState(null);
   const { currentUser, setCurrentUser } = useContext(AuthContext);
-  const location = useLocation();
-  const from = location.state?.from?.pathname;
-
-  console.log({ from });
-
-  const navigate = useNavigate();
 
   const handleAuthStateChange = useCallback(
     async (user) => {
@@ -31,12 +24,7 @@ const useAuth = () => {
               role: getRoleString(userData.role),
             };
             localStorage.setItem("currentUser", JSON.stringify(newData));
-            const storedUser = localStorage.getItem("currentUser");
-            setCurrentUser(JSON.parse(storedUser));
             setUserRole(newData.role);
-            if (from && from !== location.pathname) {
-              navigate(from, { replace: true });
-            }
           } else {
             console.log("User data not found in Firestore");
           }
@@ -47,7 +35,7 @@ const useAuth = () => {
         setCurrentUser(null);
       }
     },
-    [from, navigate, setCurrentUser, location.pathname]
+    [setCurrentUser]
   );
 
   useEffect(() => {

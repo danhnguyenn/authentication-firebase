@@ -29,6 +29,7 @@
 
 .container .ant-space-item {
   width: 100%;
+  flex:1;
 }
 
 /* .container .nav-link{
