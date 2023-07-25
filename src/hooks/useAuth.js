@@ -3,13 +3,16 @@ import { AuthContext } from "../context/AuthContext";
 import { auth, db } from "../config/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { getRoleString } from "../utils/func";
+import { useNavigate } from "react-router-dom";
 
 const useAuth = () => {
   const [userRole, setUserRole] = useState(null);
   const { currentUser, setCurrentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleAuthStateChange = useCallback(
     async (user) => {
+      console.log({ user });
       if (user) {
         try {
           const userRef = collection(db, "users");
@@ -19,10 +22,12 @@ const useAuth = () => {
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             const userData = userDoc.data();
+
             const newData = {
               ...userData,
               role: getRoleString(userData.role),
             };
+
             localStorage.setItem("currentUser", JSON.stringify(newData));
             setUserRole(newData.role);
           } else {
@@ -35,7 +40,7 @@ const useAuth = () => {
         setCurrentUser(null);
       }
     },
-    [setCurrentUser]
+    [setCurrentUser, navigate]
   );
 
   useEffect(() => {

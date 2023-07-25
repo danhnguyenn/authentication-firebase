@@ -1,27 +1,26 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
+  const storedUser = localStorage.getItem("currentUser");
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
     if (storedUser) {
       setCurrentUser(JSON.parse(storedUser));
     }
-  }, []);
+  }, [storedUser]);
 
   useEffect(() => {
     if (!currentUser) {
       navigate("/login");
+    } else if (currentUser) {
+      navigate("/");
     }
   }, [currentUser, navigate]);
-
-  console.log({ currentUser });
-
   return (
     <AuthContext.Provider
       value={{

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import useClassroom from "../hooks/useClassroom";
 import { UserOutlined } from "@ant-design/icons";
 import { Avatar, Card, Typography } from "antd";
@@ -37,4 +37,4 @@ const Classroom = () => {
   return <div>{renderConditional()}</div>;
 };
 
-export default Classroom;
+export default memo(Classroom);
